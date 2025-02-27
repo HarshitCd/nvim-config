@@ -1,5 +1,17 @@
-local tokyo_night = { 'folke/tokyonight.nvim', config = function() vim.cmd.colorscheme "tokyonight" end }
+local tokyo_night = {
+  'folke/tokyonight.nvim',
+}
+
+local gruvbox = {
+  'ellisonleao/gruvbox.nvim',
+}
+
+local github_themes = {
+  'projekt0n/github-nvim-theme',
+}
 
 return {
-  tokyo_night = tokyo_night
+  gruvbox,
+  tokyo_night,
+  github_themes,
 }
