@@ -12,6 +12,32 @@ local lsp = {
         },
       },
     },
+    {
+      "jose-elias-alvarez/null-ls.nvim",
+      config = function()
+        local null_ls = require("null-ls")
+        null_ls.setup({
+          sources = {
+            -- ESLint for linting
+            null_ls.builtins.diagnostics.eslint_d.with({
+              condition = function(utils)
+                return utils.root_has_file({ ".eslintrc", ".eslintrc.json", ".eslintrc.js" })
+              end,
+            }),
+
+            -- ESLint for formatting (or you can use Prettier directly)
+            null_ls.builtins.formatting.prettier.with({
+              filetypes = { "javascript", "typescript", "css", "scss", "html", "json", "yaml", "markdown" },
+            }),
+
+            -- Black for formatting
+            null_ls.builtins.formatting.black.with({
+              extra_args = { "--line-length", "80" }, -- Optional: set line length for black
+            }),
+          },
+        })
+      end,
+    },
   },
 
   config = function()
@@ -37,13 +63,25 @@ local lsp = {
 
     lspconfig.clangd.setup {}
 
+    lspconfig.eslint.setup {
+      on_attach = function(client)
+        client.server_capabilities.documentFormattingProvider = false -- Use null-ls for formatting
+      end,
+    }
+
+    lspconfig.ts_ls.setup {
+      on_attach = function(client)
+        client.server_capabilities.documentFormattingProvider = false -- Use null-ls for formatting
+      end,
+    }
+
     -- Format on :w
     vim.api.nvim_create_autocmd('LspAttach', {
       callback = function(args)
         local client = vim.lsp.get_client_by_id(args.data.client_id)
         if not client then return end
 
-        if client.supports_method('textDocument/implementation') then
+        if client.supports_method('textDocument/formatting') then
           -- Create a keymap for vim.lsp.buf.implementation
           vim.api.nvim_create_autocmd('BufWritePre', {
             buffer = args.buf,

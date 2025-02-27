@@ -9,6 +9,10 @@ local gitsigns = { -- Adds git related signs to the gutter, as well as utilities
       changedelete = { text = '~' },
     },
   },
+  config = function()
+    require('gitsigns').setup {}
+    vim.keymap.set('n', 'gb', ':Gitsigns toggle_current_line_blame<CR>')
+  end,
 }
 
 return { gitsigns }
