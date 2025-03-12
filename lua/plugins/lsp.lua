@@ -75,6 +75,27 @@ local lsp = {
       end,
     }
 
+    lspconfig.html.setup {
+      cmd = { "vscode-html-language-server", "--stdio" },
+      filetypes = { "html" },
+    }
+
+    lspconfig.cssls.setup({
+      cmd = { "vscode-css-language-server", "--stdio" },
+      filetypes = { "css", "scss", "less" },
+      settings = {
+        css = {
+          validate = true,
+        },
+        scss = {
+          validate = true,
+        },
+        less = {
+          validate = true,
+        },
+      },
+    })
+
     -- Format on :w
     vim.api.nvim_create_autocmd('LspAttach', {
       callback = function(args)

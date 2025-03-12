@@ -20,6 +20,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 vim.opt.signcolumn = 'yes'
+-- vim.opt.colorcolumn = '120'
 
 vim.opt.updatetime = 500
 vim.opt.timeoutlen = 500
@@ -44,6 +45,8 @@ vim.keymap.set('n', '<leader>x', ':.lua<CR>')
 vim.keymap.set('v', '<leader>x', ':lua<CR>')
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>')
 vim.keymap.set('n', '<M-k>', '<cmd>cprev<CR>')
+vim.keymap.set('n', '<leader>cc', '<cmd>if &modified | echoerr "Save Changes" | else | bp | bd # | endif<CR>',
+  { desc = 'Close Current Buffer' })
 
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
